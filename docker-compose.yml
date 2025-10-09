@@ -112,8 +112,8 @@ services:
   # User Service
   user-service:
     build:
-      context: ./user-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: user-service/Dockerfile
     container_name: helabooking-user-service
     ports:
       - "8081:8081"
@@ -136,8 +136,8 @@ services:
   # Event Service
   event-service:
     build:
-      context: ./event-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: event-service/Dockerfile
     container_name: helabooking-event-service
     ports:
       - "8082:8082"
@@ -160,8 +160,8 @@ services:
   # Booking Service
   booking-service:
     build:
-      context: ./booking-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: booking-service/Dockerfile
     container_name: helabooking-booking-service
     ports:
       - "8083:8083"
@@ -187,8 +187,8 @@ services:
   # Ticketing Service
   ticketing-service:
     build:
-      context: ./ticketing-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ticketing-service/Dockerfile
     container_name: helabooking-ticketing-service
     ports:
       - "8084:8084"
@@ -211,8 +211,8 @@ services:
   # Notification Service
   notification-service:
     build:
-      context: ./notification-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: notification-service/Dockerfile
     container_name: helabooking-notification-service
     ports:
       - "8085:8085"
@@ -235,8 +235,8 @@ services:
   # Audit Service
   audit-service:
     build:
-      context: ./audit-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: audit-service/Dockerfile
     container_name: helabooking-audit-service
     ports:
       - "8086:8086"
