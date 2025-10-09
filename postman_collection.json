@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "HelaBooking API",
+    "_postman_id": "helabooking-collection",
+    "description": "Collection for HelaBooking backend services (user, event, booking). Replace {{baseUrl}} with the service gateway or host.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Service",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"P@ssw0rd\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/users/register", "host": ["{{baseUrl}}"], "path": ["api","users","register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"alice\",\n  \"password\": \"P@ssw0rd\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/users/login", "host": ["{{baseUrl}}"], "path": ["api","users","login"] }
+          }
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/users/health", "host": ["{{baseUrl}}"], "path": ["api","users","health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Event Service",
+      "item": [
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Concert\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T19:00:00\",\n  \"capacity\": 200\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/events", "host": ["{{baseUrl}}"], "path": ["api","events"] }
+          }
+        },
+        {
+          "name": "Get Event by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Get All Events",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/events", "host": ["{{baseUrl}}"], "path": ["api","events"] }
+          }
+        },
+        {
+          "name": "Update Event",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Concert Updated\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T20:00:00\",\n  \"capacity\": 220\n}" },
+            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Delete Event",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Reserve Seats",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/events/:id/reserve?seats=2", "host": ["{{baseUrl}}"], "path": ["api","events",":id","reserve"], "query": [{ "key": "seats", "value": "2" }], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/events/health", "host": ["{{baseUrl}}"], "path": ["api","events","health"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Booking Service",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"numberOfTickets\": 2\n}" },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+          }
+        },
+        {
+          "name": "Get Booking by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/bookings/:id", "host": ["{{baseUrl}}"], "path": ["api","bookings",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Get Bookings by User",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/bookings/user/:userId", "host": ["{{baseUrl}}"], "path": ["api","bookings","user",":userId"], "variable": [{ "key": "userId", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Get All Bookings",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+          }
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/bookings/health", "host": ["{{baseUrl}}"], "path": ["api","bookings","health"] }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" }
+  ]
+}
