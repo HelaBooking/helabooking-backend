@@ -4,6 +4,9 @@ Spring Boot Microservices Backend for HelaBooking Event Management System
 
 ## Architecture Overview
 
+<img width="1257" height="492" alt="Event Booking drawio (2)" src="https://github.com/user-attachments/assets/ca1df09e-7679-463b-bfb5-572afd764e10" />
+
+
 This is a microservices-based event booking system built with Spring Boot, featuring:
 
 - **Synchronous APIs**: User (JWT auth), Event (CRUD), and Booking services
