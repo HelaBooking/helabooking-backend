@@ -18,7 +18,7 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"P@ssw0rd\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/users/register", "host": ["{{baseUrl}}"], "path": ["api","users","register"] }
+            "url": { "raw": "{{userBaseUrl}}/api/users/register", "host": ["{{userBaseUrl}}"], "path": ["api","users","register"] }
           }
         },
         {
@@ -27,14 +27,14 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": { "mode": "raw", "raw": "{\n  \"username\": \"alice\",\n  \"password\": \"P@ssw0rd\"\n}" },
-            "url": { "raw": "{{baseUrl}}/api/users/login", "host": ["{{baseUrl}}"], "path": ["api","users","login"] }
+            "url": { "raw": "{{userBaseUrl}}/api/users/login", "host": ["{{userBaseUrl}}"], "path": ["api","users","login"] }
           }
         },
         {
           "name": "Health",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/users/health", "host": ["{{baseUrl}}"], "path": ["api","users","health"] }
+            "url": { "raw": "{{userBaseUrl}}/api/users/health", "host": ["{{userBaseUrl}}"], "path": ["api","users","health"] }
           }
         }
       ]
@@ -51,21 +51,21 @@
               "mode": "raw",
               "raw": "{\n  \"name\": \"Concert\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T19:00:00\",\n  \"capacity\": 200\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/events", "host": ["{{baseUrl}}"], "path": ["api","events"] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events", "host": ["{{eventBaseUrl}}"], "path": ["api","events"] }
           }
         },
         {
           "name": "Get Event by ID",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
           }
         },
         {
           "name": "Get All Events",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/events", "host": ["{{baseUrl}}"], "path": ["api","events"] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events", "host": ["{{eventBaseUrl}}"], "path": ["api","events"] }
           }
         },
         {
@@ -74,28 +74,28 @@
             "method": "PUT",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": { "mode": "raw", "raw": "{\n  \"name\": \"Concert Updated\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T20:00:00\",\n  \"capacity\": 220\n}" },
-            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
           }
         },
         {
           "name": "Delete Event",
           "request": {
             "method": "DELETE",
-            "url": { "raw": "{{baseUrl}}/api/events/:id", "host": ["{{baseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
           }
         },
         {
           "name": "Reserve Seats",
           "request": {
             "method": "POST",
-            "url": { "raw": "{{baseUrl}}/api/events/:id/reserve?seats=2", "host": ["{{baseUrl}}"], "path": ["api","events",":id","reserve"], "query": [{ "key": "seats", "value": "2" }], "variable": [{ "key": "id", "value": "1" }] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events/:id/reserve?seats=2", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id","reserve"], "query": [{ "key": "seats", "value": "2" }], "variable": [{ "key": "id", "value": "1" }] }
           }
         },
         {
           "name": "Health",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/events/health", "host": ["{{baseUrl}}"], "path": ["api","events","health"] }
+            "url": { "raw": "{{eventBaseUrl}}/api/events/health", "host": ["{{eventBaseUrl}}"], "path": ["api","events","health"] }
           }
         }
       ]
@@ -109,41 +109,43 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": { "mode": "raw", "raw": "{\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"numberOfTickets\": 2\n}" },
-            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+            "url": { "raw": "{{bookingBaseUrl}}/api/bookings", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings"] }
           }
         },
         {
           "name": "Get Booking by ID",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/bookings/:id", "host": ["{{baseUrl}}"], "path": ["api","bookings",":id"], "variable": [{ "key": "id", "value": "1" }] }
+            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/:id", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings",":id"], "variable": [{ "key": "id", "value": "1" }] }
           }
         },
         {
           "name": "Get Bookings by User",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/bookings/user/:userId", "host": ["{{baseUrl}}"], "path": ["api","bookings","user",":userId"], "variable": [{ "key": "userId", "value": "1" }] }
+            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/user/:userId", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings","user",":userId"], "variable": [{ "key": "userId", "value": "1" }] }
           }
         },
         {
           "name": "Get All Bookings",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+            "url": { "raw": "{{bookingBaseUrl}}/api/bookings", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings"] }
           }
         },
         {
           "name": "Health",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/api/bookings/health", "host": ["{{baseUrl}}"], "path": ["api","bookings","health"] }
+            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/health", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings","health"] }
           }
         }
       ]
     }
   ],
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" }
+    { "key": "userBaseUrl", "value": "http://localhost:8081", "type": "string" },
+    { "key": "eventBaseUrl", "value": "http://localhost:8082", "type": "string" },
+    { "key": "bookingBaseUrl", "value": "http://localhost:8083", "type": "string" }
   ]
 }

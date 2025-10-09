@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:mySecretKeyForJWTTokenGenerationHelaBooking12345678901234567890}")
+    @Value("${jwt.secret:Q2hhbmdlVGhpc1NlY3JldFdpdGhFeGFtcGxlRm9ySGVsYUJvb2tpbmdFbmNyeXB0aW9uLTEyMzQ1Njc4OTAxMjM0NTY3ODkw}")
     private String jwtSecret;
 
     @Value("${jwt.expiration:86400000}")
