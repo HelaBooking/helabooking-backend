@@ -1,0 +1,11 @@
+package com.helabooking.ticketing;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication(scanBasePackages = {"com.helabooking.ticketing", "com.helabooking.common"})
+public class TicketingServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TicketingServiceApplication.class, args);
+    }
+}

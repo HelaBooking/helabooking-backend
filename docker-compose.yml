@@ -1,0 +1,269 @@
+version: '3.8'
+
+services:
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: helabooking-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - helabooking-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL for User Service
+  userdb:
+    image: postgres:15
+    container_name: helabooking-userdb
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - userdb-data:/var/lib/postgresql/data
+
+  # PostgreSQL for Event Service
+  eventdb:
+    image: postgres:15
+    container_name: helabooking-eventdb
+    environment:
+      POSTGRES_DB: eventdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - eventdb-data:/var/lib/postgresql/data
+
+  # PostgreSQL for Booking Service
+  bookingdb:
+    image: postgres:15
+    container_name: helabooking-bookingdb
+    environment:
+      POSTGRES_DB: bookingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5434:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - bookingdb-data:/var/lib/postgresql/data
+
+  # PostgreSQL for Ticketing Service
+  ticketingdb:
+    image: postgres:15
+    container_name: helabooking-ticketingdb
+    environment:
+      POSTGRES_DB: ticketingdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5435:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - ticketingdb-data:/var/lib/postgresql/data
+
+  # PostgreSQL for Notification Service
+  notificationdb:
+    image: postgres:15
+    container_name: helabooking-notificationdb
+    environment:
+      POSTGRES_DB: notificationdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5436:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - notificationdb-data:/var/lib/postgresql/data
+
+  # PostgreSQL for Audit Service
+  auditdb:
+    image: postgres:15
+    container_name: helabooking-auditdb
+    environment:
+      POSTGRES_DB: auditdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5437:5432"
+    networks:
+      - helabooking-network
+    volumes:
+      - auditdb-data:/var/lib/postgresql/data
+
+  # User Service
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: helabooking-user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://userdb:5432/userdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      userdb:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+  # Event Service
+  event-service:
+    build:
+      context: ./event-service
+      dockerfile: Dockerfile
+    container_name: helabooking-event-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://eventdb:5432/eventdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      eventdb:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+  # Booking Service
+  booking-service:
+    build:
+      context: ./booking-service
+      dockerfile: Dockerfile
+    container_name: helabooking-booking-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://bookingdb:5432/bookingdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      EVENT_SERVICE_URL: http://event-service:8082
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      bookingdb:
+        condition: service_started
+      event-service:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+  # Ticketing Service
+  ticketing-service:
+    build:
+      context: ./ticketing-service
+      dockerfile: Dockerfile
+    container_name: helabooking-ticketing-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ticketingdb:5432/ticketingdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      ticketingdb:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: helabooking-notification-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://notificationdb:5432/notificationdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      notificationdb:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+  # Audit Service
+  audit-service:
+    build:
+      context: ./audit-service
+      dockerfile: Dockerfile
+    container_name: helabooking-audit-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auditdb:5432/auditdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      auditdb:
+        condition: service_started
+    networks:
+      - helabooking-network
+
+networks:
+  helabooking-network:
+    driver: bridge
+
+volumes:
+  userdb-data:
+  eventdb-data:
+  bookingdb-data:
+  ticketingdb-data:
+  notificationdb-data:
+  auditdb-data:
