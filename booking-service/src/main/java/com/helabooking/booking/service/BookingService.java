@@ -32,7 +32,15 @@ public class BookingService {
         booking.setUserId(request.getUserId());
         booking.setEventId(request.getEventId());
         booking.setNumberOfTickets(request.getNumberOfTickets());
+        booking.setTicketType(request.getTicketType() != null ? request.getTicketType() : com.helabooking.booking.model.TicketType.PAID);
         booking.setStatus("PENDING");
+
+        // Calculate total price
+        if (request.getPricePerTicket() != null) {
+            booking.setTotalPrice(request.getPricePerTicket().multiply(
+                java.math.BigDecimal.valueOf(request.getNumberOfTickets())
+            ));
+        }
 
         booking = bookingRepository.save(booking);
 
@@ -91,6 +99,8 @@ public class BookingService {
                 booking.getUserId(),
                 booking.getEventId(),
                 booking.getNumberOfTickets(),
+                booking.getTicketType(),
+                booking.getTotalPrice(),
                 booking.getStatus(),
                 booking.getCreatedAt()
         );
