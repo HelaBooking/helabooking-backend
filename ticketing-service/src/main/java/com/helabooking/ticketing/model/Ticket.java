@@ -29,6 +29,12 @@ public class Ticket {
     @Column(nullable = false, unique = true)
     private String ticketNumber;
 
+    @Column(unique = true)
+    private String qrCode;
+
+    @Column(unique = true)
+    private String barcode;
+
     private LocalDateTime createdAt;
 
     @PrePersist
