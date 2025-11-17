@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +28,12 @@ public class Booking {
     private Integer numberOfTickets;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TicketType ticketType = TicketType.PAID;
+
+    private BigDecimal totalPrice;
+
+    @Column(nullable = false)
     private String status; // PENDING, CONFIRMED, FAILED
 
     private LocalDateTime createdAt;
@@ -34,5 +41,8 @@ public class Booking {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        if (ticketType == null) {
+            ticketType = TicketType.PAID;
+        }
     }
 }
