@@ -46,17 +46,23 @@ public class UserService {
         user = userRepository.save(user);
 
         // Publish user.registered event
-        UserRegisteredEvent event = new UserRegisteredEvent(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                LocalDateTime.now()
-        );
-        rabbitTemplate.convertAndSend(
-                RabbitMQConfig.EXCHANGE_NAME,
-                RabbitMQConfig.USER_REGISTERED_KEY,
-                event
-        );
+        try {
+            UserRegisteredEvent event = new UserRegisteredEvent(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail(),
+                    LocalDateTime.now()
+            );
+            rabbitTemplate.convertAndSend(
+                    RabbitMQConfig.EXCHANGE_NAME,
+                    RabbitMQConfig.USER_REGISTERED_KEY,
+                    event
+            );
+        } catch (Exception e) {
+            // Log but don't fail the registration if event publishing fails
+            System.err.println("Failed to publish user.registered event: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         String token = tokenProvider.generateToken(user.getUsername());
         return new AuthResponse(token, user.getUsername(), user.getEmail());
