@@ -5,6 +5,7 @@ import com.helabooking.common.event.UserRegisteredEvent;
 import com.helabooking.user.dto.AuthResponse;
 import com.helabooking.user.dto.LoginRequest;
 import com.helabooking.user.dto.RegisterRequest;
+import com.helabooking.user.dto.UserProfileResponse;
 import com.helabooking.user.model.User;
 import com.helabooking.user.repository.UserRepository;
 import com.helabooking.user.security.JwtTokenProvider;
@@ -42,6 +43,7 @@ public class UserService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole() != null ? request.getRole() : com.helabooking.user.model.UserRole.USER);
 
         user = userRepository.save(user);
 
@@ -65,7 +67,7 @@ public class UserService {
         }
 
         String token = tokenProvider.generateToken(user.getUsername());
-        return new AuthResponse(token, user.getUsername(), user.getEmail());
+        return new AuthResponse(user.getId(), token, user.getUsername(), user.getEmail(), user.getRole());
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -77,6 +79,31 @@ public class UserService {
         }
 
         String token = tokenProvider.generateToken(user.getUsername());
-        return new AuthResponse(token, user.getUsername(), user.getEmail());
+        return new AuthResponse(user.getId(), token, user.getUsername(), user.getEmail(), user.getRole());
+    }
+
+    public UserProfileResponse getProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapToProfileResponse(user);
+    }
+
+    public UserProfileResponse updateRole(Long userId, com.helabooking.user.model.UserRole role) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(role);
+        user = userRepository.save(user);
+        return mapToProfileResponse(user);
+    }
+
+    private UserProfileResponse mapToProfileResponse(User user) {
+        return new UserProfileResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getActive(),
+                user.getCreatedAt()
+        );
     }
 }
