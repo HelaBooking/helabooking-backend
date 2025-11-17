@@ -11,7 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EventRequest {
     private String name;
+    private String description;
     private String location;
+    private String venue;
+    private String agenda;
+    private String categories;
     private LocalDateTime eventDate;
+    private LocalDateTime endDate;
+    private Boolean isRecurring;
+    private String recurrencePattern;
+    private Boolean isMultiSession;
     private Integer capacity;
 }
