@@ -20,17 +20,41 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
+    @Column(length = 2000)
+    private String description;
+
     @Column(nullable = false)
     private String location;
 
+    private String venue;
+
+    @Column(length = 5000)
+    private String agenda;
+
+    private String categories;
+
     @Column(nullable = false)
     private LocalDateTime eventDate;
+
+    private LocalDateTime endDate;
+
+    private Boolean isRecurring = false;
+
+    private String recurrencePattern; // e.g., "DAILY", "WEEKLY", "MONTHLY"
+
+    private Boolean isMultiSession = false;
 
     @Column(nullable = false)
     private Integer capacity;
 
     @Column(nullable = false)
     private Integer availableSeats;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EventStatus status = EventStatus.DRAFT;
+
+    private LocalDateTime publishedAt;
 
     private LocalDateTime createdAt;
 
@@ -39,6 +63,15 @@ public class Event {
         createdAt = LocalDateTime.now();
         if (availableSeats == null) {
             availableSeats = capacity;
+        }
+        if (status == null) {
+            status = EventStatus.DRAFT;
+        }
+        if (isRecurring == null) {
+            isRecurring = false;
+        }
+        if (isMultiSession == null) {
+            isMultiSession = false;
         }
     }
 }

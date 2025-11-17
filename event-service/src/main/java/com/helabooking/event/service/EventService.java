@@ -26,8 +26,16 @@ public class EventService {
     public EventResponse createEvent(EventRequest request) {
         Event event = new Event();
         event.setName(request.getName());
+        event.setDescription(request.getDescription());
         event.setLocation(request.getLocation());
+        event.setVenue(request.getVenue());
+        event.setAgenda(request.getAgenda());
+        event.setCategories(request.getCategories());
         event.setEventDate(request.getEventDate());
+        event.setEndDate(request.getEndDate());
+        event.setIsRecurring(request.getIsRecurring() != null ? request.getIsRecurring() : false);
+        event.setRecurrencePattern(request.getRecurrencePattern());
+        event.setIsMultiSession(request.getIsMultiSession() != null ? request.getIsMultiSession() : false);
         event.setCapacity(request.getCapacity());
 
         event = eventRepository.save(event);
@@ -67,8 +75,16 @@ public class EventService {
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         event.setName(request.getName());
+        event.setDescription(request.getDescription());
         event.setLocation(request.getLocation());
+        event.setVenue(request.getVenue());
+        event.setAgenda(request.getAgenda());
+        event.setCategories(request.getCategories());
         event.setEventDate(request.getEventDate());
+        event.setEndDate(request.getEndDate());
+        event.setIsRecurring(request.getIsRecurring() != null ? request.getIsRecurring() : false);
+        event.setRecurrencePattern(request.getRecurrencePattern());
+        event.setIsMultiSession(request.getIsMultiSession() != null ? request.getIsMultiSession() : false);
         event.setCapacity(request.getCapacity());
 
         event = eventRepository.save(event);
@@ -83,26 +99,57 @@ public class EventService {
     }
 
     public boolean reserveSeats(Long eventId, Integer numberOfSeats) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+        synchronized (this) {
+            Event event = eventRepository.findById(eventId)
+                    .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        if (event.getAvailableSeats() < numberOfSeats) {
-            return false;
+            // Prevent overbooking by checking available seats
+            if (event.getAvailableSeats() < numberOfSeats) {
+                return false;
+            }
+
+            event.setAvailableSeats(event.getAvailableSeats() - numberOfSeats);
+            eventRepository.save(event);
+            return true;
         }
-
-        event.setAvailableSeats(event.getAvailableSeats() - numberOfSeats);
-        eventRepository.save(event);
-        return true;
     }
 
     private EventResponse mapToResponse(Event event) {
         return new EventResponse(
                 event.getId(),
                 event.getName(),
+                event.getDescription(),
                 event.getLocation(),
+                event.getVenue(),
+                event.getAgenda(),
+                event.getCategories(),
                 event.getEventDate(),
+                event.getEndDate(),
+                event.getIsRecurring(),
+                event.getRecurrencePattern(),
+                event.getIsMultiSession(),
                 event.getCapacity(),
-                event.getAvailableSeats()
+                event.getAvailableSeats(),
+                event.getStatus(),
+                event.getPublishedAt()
         );
+    }
+
+    public EventResponse publishEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+        
+        event.setStatus(com.helabooking.event.model.EventStatus.PUBLISHED);
+        event.setPublishedAt(LocalDateTime.now());
+        event = eventRepository.save(event);
+        
+        return mapToResponse(event);
+    }
+
+    public List<EventResponse> getPublishedEvents() {
+        return eventRepository.findAll().stream()
+                .filter(event -> event.getStatus() == com.helabooking.event.model.EventStatus.PUBLISHED)
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 }

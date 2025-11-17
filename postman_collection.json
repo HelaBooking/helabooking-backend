@@ -1,151 +1,890 @@
 {
-  "info": {
-    "name": "HelaBooking API",
-    "_postman_id": "helabooking-collection",
-    "description": "Collection for HelaBooking backend services (user, event, booking). Replace {{baseUrl}} with the service gateway or host.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "User Service",
-      "item": [
-        {
-          "name": "Register",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"P@ssw0rd\"\n}"
-            },
-            "url": { "raw": "{{userBaseUrl}}/api/users/register", "host": ["{{userBaseUrl}}"], "path": ["api","users","register"] }
-          }
-        },
-        {
-          "name": "Login",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"username\": \"alice\",\n  \"password\": \"P@ssw0rd\"\n}" },
-            "url": { "raw": "{{userBaseUrl}}/api/users/login", "host": ["{{userBaseUrl}}"], "path": ["api","users","login"] }
-          }
-        },
-        {
-          "name": "Health",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{userBaseUrl}}/api/users/health", "host": ["{{userBaseUrl}}"], "path": ["api","users","health"] }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Event Service",
-      "item": [
-        {
-          "name": "Create Event",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Concert\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T19:00:00\",\n  \"capacity\": 200\n}"
-            },
-            "url": { "raw": "{{eventBaseUrl}}/api/events", "host": ["{{eventBaseUrl}}"], "path": ["api","events"] }
-          }
-        },
-        {
-          "name": "Get Event by ID",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Get All Events",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{eventBaseUrl}}/api/events", "host": ["{{eventBaseUrl}}"], "path": ["api","events"] }
-          }
-        },
-        {
-          "name": "Update Event",
-          "request": {
-            "method": "PUT",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Concert Updated\",\n  \"location\": \"Main Hall\",\n  \"eventDate\": \"2025-11-01T20:00:00\",\n  \"capacity\": 220\n}" },
-            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Delete Event",
-          "request": {
-            "method": "DELETE",
-            "url": { "raw": "{{eventBaseUrl}}/api/events/:id", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id"], "variable": [{ "key": "id", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Reserve Seats",
-          "request": {
-            "method": "POST",
-            "url": { "raw": "{{eventBaseUrl}}/api/events/:id/reserve?seats=2", "host": ["{{eventBaseUrl}}"], "path": ["api","events",":id","reserve"], "query": [{ "key": "seats", "value": "2" }], "variable": [{ "key": "id", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Health",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{eventBaseUrl}}/api/events/health", "host": ["{{eventBaseUrl}}"], "path": ["api","events","health"] }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Booking Service",
-      "item": [
-        {
-          "name": "Create Booking",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"numberOfTickets\": 2\n}" },
-            "url": { "raw": "{{bookingBaseUrl}}/api/bookings", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings"] }
-          }
-        },
-        {
-          "name": "Get Booking by ID",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/:id", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings",":id"], "variable": [{ "key": "id", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Get Bookings by User",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/user/:userId", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings","user",":userId"], "variable": [{ "key": "userId", "value": "1" }] }
-          }
-        },
-        {
-          "name": "Get All Bookings",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{bookingBaseUrl}}/api/bookings", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings"] }
-          }
-        },
-        {
-          "name": "Health",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{bookingBaseUrl}}/api/bookings/health", "host": ["{{bookingBaseUrl}}"], "path": ["api","bookings","health"] }
-          }
-        }
-      ]
-    }
-  ],
-  "variable": [
-    { "key": "userBaseUrl", "value": "http://localhost:8081", "type": "string" },
-    { "key": "eventBaseUrl", "value": "http://localhost:8082", "type": "string" },
-    { "key": "bookingBaseUrl", "value": "http://localhost:8083", "type": "string" }
-  ]
+	"info": {
+		"_postman_id": "e7bc34a1-1dbc-41b9-9245-bf4ce05cdf96",
+		"name": "HellaBooking Backend API - Complete",
+		"description": "Complete API collection for HellaBooking Backend - User, Event, Booking, and Ticketing Services with all enhanced features",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29204809",
+		"_collection_link": "https://paper-management.postman.co/workspace/FYP~eb03fd07-b7fe-4086-8c83-b626ebb8ed66/collection/29204809-e7bc34a1-1dbc-41b9-9245-bf4ce05cdf96?action=share&source=collection_link&creator=29204809"
+	},
+	"item": [
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/health",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.collectionVariables.set('token', jsonData.token);",
+									"    }",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('userId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass123\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/register",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						},
+						"description": "Register a new user with optional role (USER, AUDITOR, ADMIN). Default is USER."
+					},
+					"response": []
+				},
+				{
+					"name": "Register Admin User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.collectionVariables.set('adminToken', jsonData.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin_user\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"AdminPass123\",\n  \"role\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/register",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						},
+						"description": "Register a new admin user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.collectionVariables.set('token', jsonData.token);",
+									"    }",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('userId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"john_doe\",\n  \"password\": \"SecurePass123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/login",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						},
+						"description": "Login with username and password. Returns user details including role."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/{{userId}}/profile",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"profile"
+							]
+						},
+						"description": "Get user profile information including role and active status"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Role",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"role\": \"AUDITOR\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl1}}/api/users/{{userId}}/role",
+							"host": [
+								"{{baseUrl1}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}",
+								"role"
+							]
+						},
+						"description": "Update user role (USER, AUDITOR, ADMIN). Typically requires admin privileges."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/health",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('eventId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tech Conference 2025\",\n  \"description\": \"Annual technology conference featuring latest innovations\",\n  \"location\": \"San Francisco Convention Center\",\n  \"venue\": \"Main Hall A\",\n  \"agenda\": \"09:00 - Registration\\n10:00 - Keynote Speech\\n12:00 - Lunch Break\\n13:00 - Technical Sessions\\n17:00 - Closing Remarks\",\n  \"categories\": \"Technology,Conference,Networking,Innovation\",\n  \"eventDate\": \"2025-06-15T09:00:00\",\n  \"endDate\": \"2025-06-15T18:00:00\",\n  \"isRecurring\": false,\n  \"recurrencePattern\": null,\n  \"isMultiSession\": true,\n  \"capacity\": 500\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl2}}/api/events",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Create a new event with full metadata including venue, agenda, categories, and support for recurring/multi-session events. Status defaults to DRAFT."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recurring Event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('recurringEventId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Weekly Yoga Class\",\n  \"description\": \"Relaxing yoga sessions for all levels\",\n  \"location\": \"Wellness Center\",\n  \"venue\": \"Studio 2\",\n  \"agenda\": \"Warm-up, Main session, Cool-down\",\n  \"categories\": \"Wellness,Yoga,Fitness\",\n  \"eventDate\": \"2025-07-01T18:00:00\",\n  \"endDate\": \"2025-07-01T19:30:00\",\n  \"isRecurring\": true,\n  \"recurrencePattern\": \"WEEKLY\",\n  \"isMultiSession\": false,\n  \"capacity\": 30\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl2}}/api/events",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Create a recurring event with recurrence pattern (DAILY, WEEKLY, MONTHLY)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/{{eventId}}",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tech Conference 2025 - Updated\",\n  \"description\": \"Annual technology conference - Now with AI track!\",\n  \"location\": \"San Francisco Convention Center\",\n  \"venue\": \"Main Hall B\",\n  \"agenda\": \"09:00 - Registration\\n10:00 - Keynote Speech\\n11:00 - AI Workshop\\n12:00 - Lunch Break\\n13:00 - Technical Sessions\\n17:00 - Closing Remarks\",\n  \"categories\": \"Technology,Conference,AI,Networking\",\n  \"eventDate\": \"2025-06-15T09:00:00\",\n  \"endDate\": \"2025-06-15T19:00:00\",\n  \"isRecurring\": false,\n  \"recurrencePattern\": null,\n  \"isMultiSession\": true,\n  \"capacity\": 600\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/{{eventId}}",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						},
+						"description": "Update event with all metadata fields"
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/{{eventId}}/publish",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}",
+								"publish"
+							]
+						},
+						"description": "Publish an event (change status from DRAFT to PUBLISHED). Published events are visible to attendees."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Published Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/published",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"published"
+							]
+						},
+						"description": "Get only published events (excludes drafts and cancelled events)"
+					},
+					"response": []
+				},
+				{
+					"name": "Reserve Seats",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/{{eventId}}/reserve?seats=25",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}",
+								"reserve"
+							],
+							"query": [
+								{
+									"key": "seats",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl2}}/api/events/{{eventId}}",
+							"host": [
+								"{{baseUrl2}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{eventId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Booking Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings/health",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('bookingId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{userId}},\n  \"eventId\": {{eventId}},\n  \"numberOfTickets\": 3,\n  \"ticketType\": \"PAID\",\n  \"pricePerTicket\": 99.99\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a booking with ticket type (FREE, PAID, VIP, GROUP) and pricing. Total price is calculated automatically. Includes overbooking prevention."
+					},
+					"response": []
+				},
+				{
+					"name": "Create VIP Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.id) {",
+									"        pm.collectionVariables.set('vipBookingId', jsonData.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{userId}},\n  \"eventId\": {{eventId}},\n  \"numberOfTickets\": 2,\n  \"ticketType\": \"VIP\",\n  \"pricePerTicket\": 299.99\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a VIP booking with premium pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Free Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{userId}},\n  \"eventId\": {{eventId}},\n  \"numberOfTickets\": 1,\n  \"ticketType\": \"FREE\",\n  \"pricePerTicket\": 0\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a free booking (no cost)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": {{userId}},\n  \"eventId\": {{eventId}},\n  \"numberOfTickets\": 10,\n  \"ticketType\": \"GROUP\",\n  \"pricePerTicket\": 79.99\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a group booking with discounted pricing"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings/{{bookingId}}",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bookings by User ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl3}}/api/bookings/user/{{userId}}",
+							"host": [
+								"{{baseUrl3}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"user",
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ticketing Service",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl4}}/api/tickets/health",
+							"host": [
+								"{{baseUrl4}}"
+							],
+							"path": [
+								"api",
+								"tickets",
+								"health"
+							]
+						},
+						"description": "Check if Ticketing Service is running"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tickets by Booking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl4}}/api/tickets/booking/{{bookingId}}",
+							"host": [
+								"{{baseUrl4}}"
+							],
+							"path": [
+								"api",
+								"tickets",
+								"booking",
+								"{{bookingId}}"
+							]
+						},
+						"description": "Get all tickets for a specific booking. Each ticket includes QR code and barcode."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tickets by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl4}}/api/tickets/user/{{userId}}",
+							"host": [
+								"{{baseUrl4}}"
+							],
+							"path": [
+								"api",
+								"tickets",
+								"user",
+								"{{userId}}"
+							]
+						},
+						"description": "Get all tickets for a specific user across all their bookings"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Ticket by Number",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl4}}/api/tickets/TICKET-ABC12345",
+							"host": [
+								"{{baseUrl4}}"
+							],
+							"path": [
+								"api",
+								"tickets",
+								"TICKET-ABC12345"
+							]
+						},
+						"description": "Get a specific ticket by ticket number. Returns ticket with QR code and barcode for verification."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl1",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl2",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl3",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl4",
+			"value": "http://localhost:8084",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "recurringEventId",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "bookingId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "vipBookingId",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "1",
+			"type": "string"
+		}
+	]
 }

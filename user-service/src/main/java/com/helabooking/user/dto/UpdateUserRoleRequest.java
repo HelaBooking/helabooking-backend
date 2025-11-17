@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private Long id;
-    private String token;
-    private String username;
-    private String email;
+public class UpdateUserRoleRequest {
     private UserRole role;
 }
