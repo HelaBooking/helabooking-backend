@@ -20,6 +20,8 @@ public class EventServiceClient {
             Boolean result = restTemplate.postForObject(url, null, Boolean.class);
             return result != null && result;
         } catch (Exception e) {
+            System.err.println("Failed to reserve seats for event " + eventId + ": " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
