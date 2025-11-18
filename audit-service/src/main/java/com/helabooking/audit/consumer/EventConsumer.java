@@ -41,7 +41,7 @@ public class EventConsumer {
         );
     }
 
-    @RabbitListener(queues = RabbitMQConfig.BOOKING_SUCCEEDED_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.AUDIT_BOOKING_QUEUE)
     public void handleBookingSucceeded(BookingSucceededEvent event) {
         logger.info("Received booking.succeeded event: {}", event);
         auditService.logEvent(

@@ -55,18 +55,25 @@ public class BookingService {
             booking = bookingRepository.save(booking);
 
             // Publish booking.succeeded event
-            BookingSucceededEvent event = new BookingSucceededEvent(
-                    booking.getId(),
-                    booking.getUserId(),
-                    booking.getEventId(),
-                    booking.getNumberOfTickets(),
-                    LocalDateTime.now()
-            );
-            rabbitTemplate.convertAndSend(
-                    RabbitMQConfig.EXCHANGE_NAME,
-                    RabbitMQConfig.BOOKING_SUCCEEDED_KEY,
-                    event
-            );
+            try {
+                BookingSucceededEvent event = new BookingSucceededEvent(
+                        booking.getId(),
+                        booking.getUserId(),
+                        booking.getEventId(),
+                        booking.getNumberOfTickets(),
+                        LocalDateTime.now()
+                );
+                System.out.println("Publishing booking.succeeded event for booking " + booking.getId());
+                rabbitTemplate.convertAndSend(
+                        RabbitMQConfig.EXCHANGE_NAME,
+                        RabbitMQConfig.BOOKING_SUCCEEDED_KEY,
+                        event
+                );
+                System.out.println("Successfully published booking.succeeded event for booking " + booking.getId());
+            } catch (Exception e) {
+                System.err.println("Failed to publish booking.succeeded event for booking " + booking.getId() + ": " + e.getMessage());
+                e.printStackTrace();
+            }
         } else {
             booking.setStatus("FAILED");
             booking = bookingRepository.save(booking);

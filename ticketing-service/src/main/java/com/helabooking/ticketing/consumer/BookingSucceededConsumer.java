@@ -17,7 +17,7 @@ public class BookingSucceededConsumer {
     @Autowired
     private TicketingService ticketingService;
 
-    @RabbitListener(queues = RabbitMQConfig.BOOKING_SUCCEEDED_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.TICKETING_BOOKING_QUEUE)
     public void handleBookingSucceeded(BookingSucceededEvent event) {
         logger.info("Received booking.succeeded event: {}", event);
         ticketingService.generateTickets(

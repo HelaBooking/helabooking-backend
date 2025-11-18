@@ -20,6 +20,11 @@ public class RabbitMQConfig {
     public static final String EVENT_CREATED_QUEUE = "event.created.queue";
     public static final String BOOKING_SUCCEEDED_QUEUE = "booking.succeeded.queue";
     
+    // Service-specific queues for booking.succeeded event
+    public static final String TICKETING_BOOKING_QUEUE = "ticketing.booking.queue";
+    public static final String NOTIFICATION_BOOKING_QUEUE = "notification.booking.queue";
+    public static final String AUDIT_BOOKING_QUEUE = "audit.booking.queue";
+    
     // Routing keys
     public static final String USER_REGISTERED_KEY = "user.registered";
     public static final String EVENT_CREATED_KEY = "event.created";
@@ -46,6 +51,21 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue ticketingBookingQueue() {
+        return new Queue(TICKETING_BOOKING_QUEUE, true);
+    }
+
+    @Bean
+    public Queue notificationBookingQueue() {
+        return new Queue(NOTIFICATION_BOOKING_QUEUE, true);
+    }
+
+    @Bean
+    public Queue auditBookingQueue() {
+        return new Queue(AUDIT_BOOKING_QUEUE, true);
+    }
+
+    @Bean
     public Binding userRegisteredBinding() {
         return BindingBuilder
                 .bind(userRegisteredQueue())
@@ -65,6 +85,30 @@ public class RabbitMQConfig {
     public Binding bookingSucceededBinding() {
         return BindingBuilder
                 .bind(bookingSucceededQueue())
+                .to(exchange())
+                .with(BOOKING_SUCCEEDED_KEY);
+    }
+
+    @Bean
+    public Binding ticketingBookingBinding() {
+        return BindingBuilder
+                .bind(ticketingBookingQueue())
+                .to(exchange())
+                .with(BOOKING_SUCCEEDED_KEY);
+    }
+
+    @Bean
+    public Binding notificationBookingBinding() {
+        return BindingBuilder
+                .bind(notificationBookingQueue())
+                .to(exchange())
+                .with(BOOKING_SUCCEEDED_KEY);
+    }
+
+    @Bean
+    public Binding auditBookingBinding() {
+        return BindingBuilder
+                .bind(auditBookingQueue())
                 .to(exchange())
                 .with(BOOKING_SUCCEEDED_KEY);
     }
