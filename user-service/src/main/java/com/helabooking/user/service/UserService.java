@@ -66,7 +66,7 @@ public class UserService {
             e.printStackTrace();
         }
 
-        String token = tokenProvider.generateToken(user.getUsername());
+        String token = tokenProvider.generateToken(user.getUsername(), user.getRole().name());
         return new AuthResponse(user.getId(), token, user.getUsername(), user.getEmail(), user.getRole());
     }
 
@@ -78,7 +78,7 @@ public class UserService {
             throw new RuntimeException("Invalid username or password");
         }
 
-        String token = tokenProvider.generateToken(user.getUsername());
+        String token = tokenProvider.generateToken(user.getUsername(), user.getRole().name());
         return new AuthResponse(user.getId(), token, user.getUsername(), user.getEmail(), user.getRole());
     }
 

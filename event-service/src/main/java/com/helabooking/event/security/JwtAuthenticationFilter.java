@@ -1,4 +1,4 @@
-package com.helabooking.user.security;
+package com.helabooking.event.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,13 +31,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String username = tokenProvider.getUsernameFromToken(jwt);
                 String role = tokenProvider.getRoleFromToken(jwt);
 
-                java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new java.util.ArrayList<>();
+                java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new ArrayList<>();
                 if (role != null) {
                     authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role));
                 }
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    username, null, authorities);
+                        username, null, authorities);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);

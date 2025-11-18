@@ -55,6 +55,10 @@
 					"request": {
 						"method": "POST",
 						"header": [
+						{
+							"key": "Authorization",
+							"value": "Bearer {{adminToken}}"
+						},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
@@ -101,6 +105,10 @@
 					"request": {
 						"method": "POST",
 						"header": [
+						{
+							"key": "Authorization",
+							"value": "Bearer {{adminToken}}"
+						},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
@@ -151,6 +159,10 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
@@ -200,6 +212,10 @@
 					"request": {
 						"method": "PUT",
 						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
@@ -272,6 +288,10 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
+							{
 								"key": "Content-Type",
 								"value": "application/json"
 							}
@@ -316,6 +336,10 @@
 					"request": {
 						"method": "POST",
 						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
@@ -409,7 +433,12 @@
 					"name": "Publish Event",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
 						"url": {
 							"raw": "{{baseUrl2}}/api/events/{{eventId}}/publish",
 							"host": [
@@ -476,7 +505,12 @@
 					"name": "Delete Event",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}"
+							}
+						],
 						"url": {
 							"raw": "{{baseUrl2}}/api/events/{{eventId}}",
 							"host": [

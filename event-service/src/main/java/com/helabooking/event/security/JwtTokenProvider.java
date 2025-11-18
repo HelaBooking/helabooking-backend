@@ -1,4 +1,4 @@
-package com.helabooking.user.security;
+package com.helabooking.event.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:Q2hhbmdlVGhpc1NlY3JldFdpdGhFeGFtcGxlRm9ySGVsYUJvb2tpbmdFbmNyeXB0aW9uLTEyMzQ1Njc4OTAxMjM0NTY3ODkw}")
+    @Value("${jwt.secret:ChangeThisSecretWithExampleForHelaBookingEncryption-12345678901234567890}")
     private String jwtSecret;
 
     @Value("${jwt.expiration:86400000}")
@@ -23,27 +23,6 @@ public class JwtTokenProvider {
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
-    }
-
-    public String generateToken(String username, String role) {
-        Map<String, Object> claims = new HashMap<>();
-        if (role != null) {
-            claims.put("role", role);
-        }
-        return createToken(claims, username);
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
-                .compact();
     }
 
     public String getUsernameFromToken(String token) {
