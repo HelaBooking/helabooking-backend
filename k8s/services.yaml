@@ -8,7 +8,7 @@ metadata:
   labels:
     app: user-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: user-service
@@ -70,10 +70,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -117,7 +117,7 @@ metadata:
   labels:
     app: event-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: event-service
@@ -179,10 +179,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -226,7 +226,7 @@ metadata:
   labels:
     app: booking-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: booking-service
@@ -293,10 +293,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -340,7 +340,7 @@ metadata:
   labels:
     app: ticketing-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ticketing-service
@@ -392,10 +392,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -439,7 +439,7 @@ metadata:
   labels:
     app: notification-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: notification-service
@@ -491,10 +491,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health
@@ -538,7 +538,7 @@ metadata:
   labels:
     app: audit-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: audit-service
@@ -590,10 +590,10 @@ spec:
         resources:
           requests:
             memory: "512Mi"
-            cpu: "500m"
+            cpu: "200m"
           limits:
             memory: "1Gi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           httpGet:
             path: /actuator/health

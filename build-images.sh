@@ -16,6 +16,14 @@ echo "🔧 Configuring Docker to use Minikube's Docker daemon..."
 eval $(minikube -p minikube docker-env)
 echo "✅ Docker environment configured"
 
+# Set Java 17 for the build
+echo ""
+echo "☕ Setting Java 17 for build..."
+export JAVA_HOME=/usr/local/sdkman/candidates/java/17.0.17-ms
+export PATH=$JAVA_HOME/bin:$PATH
+echo "Java version: $(java -version 2>&1 | head -n 1)"
+echo "✅ Java 17 configured"
+
 # Build Maven project first
 echo ""
 echo "📦 Building Maven project..."
