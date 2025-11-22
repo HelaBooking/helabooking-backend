@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helabooking-config
+  namespace: helabooking
+data:
+  # RabbitMQ Configuration
+  RABBITMQ_HOST: "rabbitmq-service"
+  RABBITMQ_PORT: "5672"
+  
+  # JWT Configuration
+  JWT_EXPIRATION: "86400000"
+  
+  # Database Configuration
+  POSTGRES_USER: "postgres"
+  
+  # Service URLs
+  EVENT_SERVICE_URL: "http://event-service:8082"
+  USER_SERVICE_URL: "http://user-service:8081"
+  BOOKING_SERVICE_URL: "http://booking-service:8083"
+  TICKETING_SERVICE_URL: "http://ticketing-service:8084"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:8085"
+  AUDIT_SERVICE_URL: "http://audit-service:8086"

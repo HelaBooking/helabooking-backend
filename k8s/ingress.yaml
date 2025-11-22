@@ -1,0 +1,116 @@
+---
+# Ingress for HelaBooking Services
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helabooking-ingress
+  namespace: helabooking
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: helabooking.local
+    http:
+      paths:
+      # User Service
+      - path: /user(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 8081
+      # Event Service
+      - path: /event(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: event-service
+            port:
+              number: 8082
+      # Booking Service
+      - path: /booking(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: booking-service
+            port:
+              number: 8083
+      # Ticketing Service
+      - path: /ticketing(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ticketing-service
+            port:
+              number: 8084
+      # Notification Service
+      - path: /notification(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: notification-service
+            port:
+              number: 8085
+      # Audit Service
+      - path: /audit(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: audit-service
+            port:
+              number: 8086
+---
+# NodePort Services for direct access (alternative to Ingress)
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-nodeport
+  namespace: helabooking
+  labels:
+    app: user-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8081
+    targetPort: 8081
+    nodePort: 30081
+    name: http
+  selector:
+    app: user-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: event-service-nodeport
+  namespace: helabooking
+  labels:
+    app: event-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8082
+    targetPort: 8082
+    nodePort: 30082
+    name: http
+  selector:
+    app: event-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: booking-service-nodeport
+  namespace: helabooking
+  labels:
+    app: booking-service
+spec:
+  type: NodePort
+  ports:
+  - port: 8083
+    targetPort: 8083
+    nodePort: 30083
+    name: http
+  selector:
+    app: booking-service

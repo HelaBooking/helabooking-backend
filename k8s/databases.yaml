@@ -1,0 +1,534 @@
+---
+# UserDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: userdb-service
+  namespace: helabooking
+  labels:
+    app: userdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: userdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: userdb
+  namespace: helabooking
+spec:
+  serviceName: userdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userdb
+  template:
+    metadata:
+      labels:
+        app: userdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "userdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: userdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: userdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+# EventDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventdb-service
+  namespace: helabooking
+  labels:
+    app: eventdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: eventdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: eventdb
+  namespace: helabooking
+spec:
+  serviceName: eventdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventdb
+  template:
+    metadata:
+      labels:
+        app: eventdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "eventdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: eventdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: eventdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+# BookingDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookingdb-service
+  namespace: helabooking
+  labels:
+    app: bookingdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: bookingdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bookingdb
+  namespace: helabooking
+spec:
+  serviceName: bookingdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookingdb
+  template:
+    metadata:
+      labels:
+        app: bookingdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "bookingdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: bookingdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: bookingdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+# TicketingDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticketingdb-service
+  namespace: helabooking
+  labels:
+    app: ticketingdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: ticketingdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ticketingdb
+  namespace: helabooking
+spec:
+  serviceName: ticketingdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticketingdb
+  template:
+    metadata:
+      labels:
+        app: ticketingdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "ticketingdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: ticketingdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: ticketingdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+# NotificationDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: notificationdb-service
+  namespace: helabooking
+  labels:
+    app: notificationdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: notificationdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: notificationdb
+  namespace: helabooking
+spec:
+  serviceName: notificationdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notificationdb
+  template:
+    metadata:
+      labels:
+        app: notificationdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "notificationdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: notificationdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: notificationdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+---
+# AuditDB StatefulSet and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: auditdb-service
+  namespace: helabooking
+  labels:
+    app: auditdb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: auditdb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: auditdb
+  namespace: helabooking
+spec:
+  serviceName: auditdb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auditdb
+  template:
+    metadata:
+      labels:
+        app: auditdb
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "auditdb"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: auditdb-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+  volumeClaimTemplates:
+  - metadata:
+      name: auditdb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

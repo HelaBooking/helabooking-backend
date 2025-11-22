@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: helabooking
+
+resources:
+  - namespace.yaml
+  - secrets.yaml
+  - configmap.yaml
+  - databases.yaml
+  - rabbitmq.yaml
+  - services.yaml
+  - ingress.yaml
+  - hpa.yaml
+
+commonLabels:
+  app.kubernetes.io/name: helabooking
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/managed-by: kustomize
+
+images:
+  - name: helabooking/user-service
+    newTag: latest
+  - name: helabooking/event-service
+    newTag: latest
+  - name: helabooking/booking-service
+    newTag: latest
+  - name: helabooking/ticketing-service
+    newTag: latest
+  - name: helabooking/notification-service
+    newTag: latest
+  - name: helabooking/audit-service
+    newTag: latest
