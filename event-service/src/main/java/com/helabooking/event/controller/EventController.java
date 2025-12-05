@@ -19,22 +19,30 @@ public class EventController {
     @Autowired
     private com.helabooking.event.security.JwtTokenProvider jwtTokenProvider;
     @PostMapping
-    public ResponseEntity<EventResponse> createEvent(@RequestBody EventRequest request,
+    public ResponseEntity<?> createEvent(@RequestBody EventRequest request,
                                                      @RequestHeader(value = "Authorization", required = false) String authorization) {
+        System.out.println("DEBUG: Received createEvent request");
         if (authorization == null || !authorization.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).build();
+            System.out.println("DEBUG: Missing or invalid Authorization header");
+            return ResponseEntity.status(401).body("Missing or invalid Authorization header");
         }
         String token = authorization.substring(7);
+        System.out.println("DEBUG: Token received: " + token.substring(0, Math.min(token.length(), 10)) + "...");
+        
         if (!jwtTokenProvider.validateToken(token)) {
-            return ResponseEntity.status(401).build();
+            System.out.println("DEBUG: Token validation failed");
+            return ResponseEntity.status(401).body("Token validation failed");
         }
         String role = jwtTokenProvider.getRoleFromToken(token);
-        if (role == null || !"ADMIN".equals(role)) {
-            return ResponseEntity.status(403).build();
-    
-        }
-        return ResponseEntity.ok(eventService.createEvent(request));
+        System.out.println("DEBUG: Role extracted from token: " + role);
         
+        if (role == null || !"ADMIN".equals(role)) {
+            System.out.println("DEBUG: Access denied. Required: ADMIN, Found: " + role);
+            return ResponseEntity.status(403).body("Access Denied: You need ADMIN role. Current role: " + role);
+        }
+        
+        System.out.println("DEBUG: Access granted. Creating event...");
+        return ResponseEntity.ok(eventService.createEvent(request));
     }
 
     @GetMapping("/{id}")
