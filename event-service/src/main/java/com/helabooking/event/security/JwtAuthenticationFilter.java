@@ -60,6 +60,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
+        
+        // DEBUG: Print all headers to debug missing Authorization
+        System.out.println("DEBUG: --- Request Headers ---");
+        java.util.Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String key = headerNames.nextElement();
+            String value = request.getHeader(key);
+            // Mask sensitive value partially
+            if ("Authorization".equalsIgnoreCase(key)) {
+                System.out.println("DEBUG: Header " + key + ": " + (value != null && value.length() > 10 ? value.substring(0, 10) + "..." : value));
+            } else {
+                System.out.println("DEBUG: Header " + key + ": " + value);
+            }
+        }
+        System.out.println("DEBUG: -----------------------");
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
