@@ -50,12 +50,15 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            System.out.println("DEBUG: Validating token with secret length: " + (jwtSecret != null ? jwtSecret.length() : "null"));
             Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
+            System.out.println("DEBUG: Token validation error: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
