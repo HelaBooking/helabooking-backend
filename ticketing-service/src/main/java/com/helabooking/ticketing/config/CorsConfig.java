@@ -18,7 +18,8 @@ public class CorsConfig {
 
         // Use Patterns instead of exact Origins
         config.setAllowedOriginPatterns(List.of(
-            "https://*.ezbooking.lk"  // Trust all subdomains
+            "https://*.ezbooking.lk",  // Trust all subdomains & localhost
+            "http://localhost:3000"
         ));
 
         // Keep the rest the same
