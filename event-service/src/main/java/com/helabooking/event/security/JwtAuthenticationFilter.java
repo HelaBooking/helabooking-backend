@@ -26,33 +26,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-            System.out.println("DEBUG: JwtAuthenticationFilter - JWT found: " + (jwt != null));
 
-            if (StringUtils.hasText(jwt)) {
-                boolean isValid = tokenProvider.validateToken(jwt);
-                System.out.println("DEBUG: JwtAuthenticationFilter - Token valid: " + isValid);
-                
-                if (isValid) {
-                    String username = tokenProvider.getUsernameFromToken(jwt);
-                    String role = tokenProvider.getRoleFromToken(jwt);
-                    System.out.println("DEBUG: JwtAuthenticationFilter - User: " + username + ", Role: " + role);
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                String username = tokenProvider.getUsernameFromToken(jwt);
+                String role = tokenProvider.getRoleFromToken(jwt);
 
-                    java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new ArrayList<>();
-                    if (role != null) {
-                        authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role));
-                    }
-
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            username, null, authorities);
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("DEBUG: JwtAuthenticationFilter - Authentication set in context");
+                java.util.List<org.springframework.security.core.GrantedAuthority> authorities = new ArrayList<>();
+                if (role != null) {
+                    authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + role));
                 }
+
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        username, null, authorities);
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
-            ex.printStackTrace();
         }
 
         filterChain.doFilter(request, response);
@@ -60,22 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        
-        // DEBUG: Print all headers to debug missing Authorization
-        System.out.println("DEBUG: --- Request Headers ---");
-        java.util.Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = headerNames.nextElement();
-            String value = request.getHeader(key);
-            // Mask sensitive value partially
-            if ("Authorization".equalsIgnoreCase(key)) {
-                System.out.println("DEBUG: Header " + key + ": " + (value != null && value.length() > 10 ? value.substring(0, 10) + "..." : value));
-            } else {
-                System.out.println("DEBUG: Header " + key + ": " + value);
-            }
-        }
-        System.out.println("DEBUG: -----------------------");
-
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
