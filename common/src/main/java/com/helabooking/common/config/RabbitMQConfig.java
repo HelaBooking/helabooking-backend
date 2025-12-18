@@ -15,15 +15,16 @@ public class RabbitMQConfig {
 
     public static final String EXCHANGE_NAME = "helabooking.exchange";
     
-    // Queue names
-    public static final String USER_REGISTERED_QUEUE = "user.registered.queue";
-    public static final String EVENT_CREATED_QUEUE = "event.created.queue";
-    public static final String BOOKING_SUCCEEDED_QUEUE = "booking.succeeded.queue";
+    // Queue names - separate queues for each service to avoid competing consumers
+    public static final String USER_REGISTERED_NOTIFICATION_QUEUE = "user.registered.notification.queue";
+    public static final String USER_REGISTERED_AUDIT_QUEUE = "user.registered.audit.queue";
     
-    // Service-specific queues for booking.succeeded event
-    public static final String TICKETING_BOOKING_QUEUE = "ticketing.booking.queue";
-    public static final String NOTIFICATION_BOOKING_QUEUE = "notification.booking.queue";
-    public static final String AUDIT_BOOKING_QUEUE = "audit.booking.queue";
+    public static final String EVENT_CREATED_NOTIFICATION_QUEUE = "event.created.notification.queue";
+    public static final String EVENT_CREATED_AUDIT_QUEUE = "event.created.audit.queue";
+    
+    public static final String BOOKING_SUCCEEDED_TICKETING_QUEUE = "booking.succeeded.ticketing.queue";
+    public static final String BOOKING_SUCCEEDED_NOTIFICATION_QUEUE = "booking.succeeded.notification.queue";
+    public static final String BOOKING_SUCCEEDED_AUDIT_QUEUE = "booking.succeeded.audit.queue";
     
     // Routing keys
     public static final String USER_REGISTERED_KEY = "user.registered";
@@ -35,80 +36,97 @@ public class RabbitMQConfig {
         return new TopicExchange(EXCHANGE_NAME);
     }
 
+    // User registered queues
     @Bean
-    public Queue userRegisteredQueue() {
-        return new Queue(USER_REGISTERED_QUEUE, true);
+    public Queue userRegisteredNotificationQueue() {
+        return new Queue(USER_REGISTERED_NOTIFICATION_QUEUE, true);
     }
 
     @Bean
-    public Queue eventCreatedQueue() {
-        return new Queue(EVENT_CREATED_QUEUE, true);
+    public Queue userRegisteredAuditQueue() {
+        return new Queue(USER_REGISTERED_AUDIT_QUEUE, true);
+    }
+
+    // Event created queues
+    @Bean
+    public Queue eventCreatedNotificationQueue() {
+        return new Queue(EVENT_CREATED_NOTIFICATION_QUEUE, true);
     }
 
     @Bean
-    public Queue bookingSucceededQueue() {
-        return new Queue(BOOKING_SUCCEEDED_QUEUE, true);
+    public Queue eventCreatedAuditQueue() {
+        return new Queue(EVENT_CREATED_AUDIT_QUEUE, true);
+    }
+
+    // Booking succeeded queues
+    @Bean
+    public Queue bookingSucceededTicketingQueue() {
+        return new Queue(BOOKING_SUCCEEDED_TICKETING_QUEUE, true);
     }
 
     @Bean
-    public Queue ticketingBookingQueue() {
-        return new Queue(TICKETING_BOOKING_QUEUE, true);
+    public Queue bookingSucceededNotificationQueue() {
+        return new Queue(BOOKING_SUCCEEDED_NOTIFICATION_QUEUE, true);
     }
 
     @Bean
-    public Queue notificationBookingQueue() {
-        return new Queue(NOTIFICATION_BOOKING_QUEUE, true);
+    public Queue bookingSucceededAuditQueue() {
+        return new Queue(BOOKING_SUCCEEDED_AUDIT_QUEUE, true);
     }
 
+    // Bindings - each queue gets the same routing key to receive all events
     @Bean
-    public Queue auditBookingQueue() {
-        return new Queue(AUDIT_BOOKING_QUEUE, true);
-    }
-
-    @Bean
-    public Binding userRegisteredBinding() {
+    public Binding userRegisteredNotificationBinding() {
         return BindingBuilder
-                .bind(userRegisteredQueue())
+                .bind(userRegisteredNotificationQueue())
                 .to(exchange())
                 .with(USER_REGISTERED_KEY);
     }
 
     @Bean
-    public Binding eventCreatedBinding() {
+    public Binding userRegisteredAuditBinding() {
         return BindingBuilder
-                .bind(eventCreatedQueue())
+                .bind(userRegisteredAuditQueue())
+                .to(exchange())
+                .with(USER_REGISTERED_KEY);
+    }
+
+    @Bean
+    public Binding eventCreatedNotificationBinding() {
+        return BindingBuilder
+                .bind(eventCreatedNotificationQueue())
                 .to(exchange())
                 .with(EVENT_CREATED_KEY);
     }
 
     @Bean
-    public Binding bookingSucceededBinding() {
+    public Binding eventCreatedAuditBinding() {
         return BindingBuilder
-                .bind(bookingSucceededQueue())
+                .bind(eventCreatedAuditQueue())
+                .to(exchange())
+                .with(EVENT_CREATED_KEY);
+    }
+
+    @Bean
+    public Binding bookingSucceededTicketingBinding() {
+        return BindingBuilder
+                .bind(bookingSucceededTicketingQueue())
                 .to(exchange())
                 .with(BOOKING_SUCCEEDED_KEY);
     }
 
     @Bean
-    public Binding ticketingBookingBinding() {
+    public Binding bookingSucceededNotificationBinding() {
         return BindingBuilder
-                .bind(ticketingBookingQueue())
+                .bind(bookingSucceededNotificationQueue())
                 .to(exchange())
                 .with(BOOKING_SUCCEEDED_KEY);
     }
 
     @Bean
-    public Binding notificationBookingBinding() {
+    public Binding bookingSucceededAuditBinding() {
         return BindingBuilder
-                .bind(notificationBookingQueue())
-                .to(exchange())
-                .with(BOOKING_SUCCEEDED_KEY);
-    }
-
-    @Bean
-    public Binding auditBookingBinding() {
-        return BindingBuilder
-                .bind(auditBookingQueue())
+                .bind(bookingSucceededAuditQueue())
                 .to(exchange())
                 .with(BOOKING_SUCCEEDED_KEY);
     }

@@ -19,7 +19,7 @@ public class EventConsumer {
     @Autowired
     private AuditService auditService;
 
-    @RabbitListener(queues = RabbitMQConfig.USER_REGISTERED_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.USER_REGISTERED_AUDIT_QUEUE)
     public void handleUserRegistered(UserRegisteredEvent event) {
         logger.info("Received user.registered event: {}", event);
         auditService.logEvent(
@@ -30,7 +30,7 @@ public class EventConsumer {
         );
     }
 
-    @RabbitListener(queues = RabbitMQConfig.EVENT_CREATED_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.EVENT_CREATED_AUDIT_QUEUE)
     public void handleEventCreated(EventCreatedEvent event) {
         logger.info("Received event.created event: {}", event);
         auditService.logEvent(
@@ -41,7 +41,7 @@ public class EventConsumer {
         );
     }
 
-    @RabbitListener(queues = RabbitMQConfig.AUDIT_BOOKING_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.BOOKING_SUCCEEDED_AUDIT_QUEUE)
     public void handleBookingSucceeded(BookingSucceededEvent event) {
         logger.info("Received booking.succeeded event: {}", event);
         auditService.logEvent(
